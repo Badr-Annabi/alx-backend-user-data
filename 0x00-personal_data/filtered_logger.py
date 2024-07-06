@@ -3,19 +3,16 @@
 This python file contains function called filter_datum
 that returns the log message obfuscated
 """
+
+
 import re
+from typing import List
 
 
-def filter_datum(
-        fields: list,
-        redaction: str,
-        message: str, seperator: str) -> str:
-    """
-    Obfuscated specified fields in a log message.
-    """
-    pattern = '|'.join([f"{field}=[^({seperator})]+" for field in fields])
+def filter_datum(fields: List[str], redaction: str, message: str,
+                 separator: str) -> str:
+    """ Replacing """
+    pattern = '|'.join([f"{field}=[^({separator})]+" for field in fields])
     return re.sub(
             pattern,
-            lambda m: m.group(0).split('=')[0] + f'={redaction}',
-            message
-            )
+            lambda m: m.group(0).split('=')[0] + f'={redaction}', message)
