@@ -4,7 +4,6 @@ This python file contains function called filter_datum
 that returns the log message obfuscated
 """
 
-
 import logging
 import os
 import re
