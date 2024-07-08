@@ -20,11 +20,20 @@ def not_found(error) -> str:
     """
     return jsonify({"error": "Not found"}), 404
 
+
 @app.errorhandler(401)
 def req_unauth(error) -> str:
     """Req Unauth handler"""
     response = jsonify({"error": "Unauthorized"})
     response.status_code = 401
+    return response
+
+
+@app.errorhandler(403)
+def user_not_allowed(error) -> str:
+    """user auth but not allowed handler"""
+    response = jsonify({"error": "Forbidden"})
+    response.status_code = 403
     return response
 
 

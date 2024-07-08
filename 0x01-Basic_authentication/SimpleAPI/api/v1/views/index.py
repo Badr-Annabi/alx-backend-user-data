@@ -31,3 +31,8 @@ def unauth():
     """error handler for 401"""
     abort(401)
 
+
+@app_views.route('/forbidden', methods=['GET'])
+def user_not_allowed():
+    """error handler for 403"""
+    abort(403)
