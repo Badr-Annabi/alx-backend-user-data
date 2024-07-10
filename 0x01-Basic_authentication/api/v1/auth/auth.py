@@ -29,4 +29,6 @@ class Auth():
 
     def current_user(self, request=None) -> TypeVar('User'):
         """Current user"""
+        if request is not None:
+            return request.headers.get('Authorization', None)
         return None
