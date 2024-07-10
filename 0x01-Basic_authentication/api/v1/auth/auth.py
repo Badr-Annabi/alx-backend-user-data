@@ -9,8 +9,19 @@ from typing import List, TypeVar
 class Auth():
     """Manages the API Authentication"""
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """Public method that requires auth"""
-        return False
+        """
+        Public method that requires auth
+        Return:
+            True if path in excluded_paths
+            False if not
+        """
+        if path is None or excluded_paths is None:
+            return True
+        nomal_path = path.rstrip('/')
+        for excluded_path in excluded_paths:
+            if nomal_path == excluded_path.rstrip('/'):
+                return False
+        return True
 
     def authorization_header(self, request=None) -> str:
         """Public method for authorization header"""
