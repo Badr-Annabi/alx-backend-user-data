@@ -54,6 +54,7 @@ def forbidden(error: Exception) -> Tuple[jsonify, int]:
     """
     return jsonify({"error": "Forbidden"}), 403
 
+
 @app.before_request
 def handle_request():
     """Handle req by checking for auth"""
