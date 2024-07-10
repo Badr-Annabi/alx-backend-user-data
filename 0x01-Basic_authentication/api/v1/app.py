@@ -2,11 +2,12 @@
 """
 Route module for the API
 """
+import os
 from os import getenv
+from typing import Tuple
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
-import os
 
 
 app = Flask(__name__)
@@ -22,13 +23,13 @@ def not_found(error) -> str:
 
 
 @app.errorhandler(401)
-def req_unauth(error) -> str:
+def req_unauth(error: Exception) -> Tuple[jsonify, int]:
     """Req Unauth handler"""
     return jsonify({"error": "Unauthorized"}), 401
 
 
 @app.errorhandler(403)
-def user_not_allowed(error) -> str:
+def user_not_allowed(error: Exception) -> Tuple[jsonify, int]:
     """user auth but not allowed handler"""
     return jsonify({"error": "Forbidden"}), 403
 
