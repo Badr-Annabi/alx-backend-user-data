@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Session authentication Class"""
 
+
 from uuid import uuid4
 from .auth import Auth
 
