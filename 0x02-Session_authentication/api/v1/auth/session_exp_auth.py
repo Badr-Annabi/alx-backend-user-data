@@ -15,7 +15,7 @@ class SessionExpAuth(SessionAuth):
     an Expiration to a certain session"""
 
     def __init__(self):
-        """"""
+        """__init__ method"""
         super().__init__()
         self.session_duration = int(os.getenv('SESSION_DURATION'), 0)
 
