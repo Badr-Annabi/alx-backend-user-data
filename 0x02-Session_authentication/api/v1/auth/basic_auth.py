@@ -73,4 +73,3 @@ class BasicAuth(Auth):
         """
         if user_email is None or user_pwd:
             return None
-        
