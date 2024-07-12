@@ -3,6 +3,7 @@
 
 
 from uuid import uuid4
+from models.user import User
 from .auth import Auth
 
 
@@ -24,3 +25,10 @@ class SessionAuth(Auth):
         """This module returns a User ID based on a Session ID"""
         if isinstance(session_id, str):
             return self.user_id_by_session_id.get(session_id)
+
+    def current_user(self, request=None) -> User:
+        """This method returns a User instance based on a cookie value"""
+        session_id = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_id)
+        user = User.get(user_id)
+        return user
