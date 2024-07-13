@@ -4,6 +4,8 @@
 
 from .auth import Auth
 import base64
+from typing import Tuple, TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -61,3 +63,30 @@ class BasicAuth(Auth):
         if len(usr_psw) != 2:
             return (None, None)
         return (usr_psw[0], usr_psw[1])
+
+    def user_object_from_credentials(
+            self,
+            user_email: str,
+            user_pwd: str) -> TypeVar('User'):
+        """
+        Returns the User instance
+        based on his email and password.
+        """
+        if user_email is None or user_pwd:
+            return None
+
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str) -> TypeVar('User'):
+        """Returns the User instance based on the email and password."""
+        if not all(map(lambda x: isinstance(x, str), (user_email, user_pwd))):
+            return None
+        try:
+            user = User.search(attributes={'email': user_email})
+        except Exception:
+            return None
+        if not user:
+            return None
+        user = user[0]
+        if not user.is_valid_password(user_pwd):
+            return None
+        return user
