@@ -5,14 +5,13 @@ import logging
 from typing import Dict
 
 from sqlalchemy import create_engine
-from sqlalchemy.exc import InvalidRequestError, NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 
 from user import Base, User
-
-logging.disable(logging.WARNING)
 
 
 class DB:
