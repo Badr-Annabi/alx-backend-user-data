@@ -68,6 +68,6 @@ class DB:
             user = session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
             raise NoResultFound()
-        except InvalidRequestError:
+        except InvalidRequestError or AttributeError:
             raise InvalidRequestError()
         return user
