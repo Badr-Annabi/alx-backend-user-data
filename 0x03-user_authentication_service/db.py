@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
+import logging
 from typing import Dict
 
 from sqlalchemy import create_engine
@@ -9,7 +10,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
+
 from user import Base, User
+
+logging.disable(logging.WARNING)
 
 
 class DB:
@@ -34,17 +38,39 @@ class DB:
         return self.__session
 
     def add_user(self, email: str, hashed_password: str) -> User:
-        """method to add a user to the database"""
-        user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
-        self._session.commit()
-        return user
+        """this method adds a new user to the database
+
+        Args:
+            email (str): The email address of the new user.
+            hashed_password (str): The hashed password of the new user.
+
+        Returns:
+            User: A User object representing the new user.
+        """
+        new_user = User(email=email, hashed_password=hashed_password)
+        try:
+            self._session.add(new_user)
+            self._session.commit()
+        except Exception as e:
+            print(f"Error adding user to database: {e}")
+            self._session.rollback()
+            raise
+        return new_user
 
     def find_user_by(self, **kwargs: Dict[str, str]) -> User:
-        """method to find a user with the given parameters"""
+        """
+        this method will find the user with the given kwargs.
+
+        Raises:
+            error: NoResultFound: When no results are found.
+            error: InvalidRequestError: When invalid query arguments are passed
+
+        Returns:
+            User: First row found in the `users` table.
+        """
         session = self._session
         try:
-            user = session.query(User).filter_by(**kwargs).first()
+            user = session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
             raise NoResultFound()
         except InvalidRequestError:
