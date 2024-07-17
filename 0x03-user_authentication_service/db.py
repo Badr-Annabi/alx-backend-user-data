@@ -53,27 +53,8 @@ class DB:
         self._session.commit()
         return new_user
 
-    # def find_user_by(self, **kwargs) -> Type[User]:
-    #     """this method finds a user by email and hashed password
-    #
-    #     Raises:
-    #         error: NoResultFound: When no results are found.
-    #         error: InvalidRequestError: When invalid query arguments are passed
-    #
-    #     Returns:
-    #         User: First row found in the `users` table.
-    #     """
-    #     session = self._session
-    #     try:
-    #         user = session.query(User).filter_by(**kwargs).one()
-    #     except NoResultFound:
-    #         raise NoResultFound()
-    #     except InvalidRequestError or AttributeError:
-    #         raise InvalidRequestError()
-    #     return user
-
     def find_user_by(self, **arguments) -> User:
-        """ returns the fst row found in the users table as filtered by arg"""
+        """this method finds a user by email and hashed password"""
         query = self._session.query(User)
         for arg, val in arguments.items():
             try:
@@ -81,7 +62,7 @@ class DB:
             except AttributeError:
                 raise InvalidRequestError()
             query = query.filter(q_attr == val)
-        result = query.first()
-        if result is None:
+        user = query.first()
+        if user is None:
             raise NoResultFound()
-        return result
+        return user
