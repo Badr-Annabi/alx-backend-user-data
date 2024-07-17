@@ -13,6 +13,8 @@ from sqlalchemy.orm.session import Session
 
 from user import Base, User
 
+logging.disable(logging.WARNING)
+
 
 class DB:
     """DB class
@@ -45,6 +47,7 @@ class DB:
         Returns:
             User: A User object representing the new user.
         """
+        # Create new user
         new_user = User(email=email, hashed_password=hashed_password)
         try:
             self._session.add(new_user)
@@ -56,8 +59,7 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs: Dict[str, str]) -> User:
-        """
-        this method will find the user with the given kwargs.
+        """this method finds a user by email and hashed password
 
         Raises:
             error: NoResultFound: When no results are found.
