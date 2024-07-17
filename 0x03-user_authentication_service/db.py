@@ -2,7 +2,7 @@
 """DB module
 """
 import logging
-from typing import Dict
+from typing import Type
 
 from sqlalchemy import create_engine
 from sqlalchemy.exc import InvalidRequestError
@@ -49,16 +49,11 @@ class DB:
         """
         # Create new user
         new_user = User(email=email, hashed_password=hashed_password)
-        try:
-            self._session.add(new_user)
-            self._session.commit()
-        except Exception as e:
-            print(f"Error adding user to database: {e}")
-            self._session.rollback()
-            raise
+        self._session.add(new_user)
+        self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs: Dict[str, str]) -> User:
+    def find_user_by(self, **kwargs) -> Type[User]:
         """this method finds a user by email and hashed password
 
         Raises:
