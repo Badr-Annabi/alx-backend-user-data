@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """DB module
 """
-
+from typing import Dict
 
 from sqlalchemy import create_engine
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm.session import Session
 from user import Base, User
 
@@ -36,4 +38,15 @@ class DB:
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
+        return user
+
+    def find_user_by(self, **kwargs: Dict[str, str]) -> User:
+        """method to find a user with the given parameters"""
+        session = self._session
+        try:
+            user = session.query(User).filter_by(**kwargs).first()
+        except NoResultFound:
+            raise NoResultFound()
+        except InvalidRequestError:
+            raise InvalidRequestError()
         return user
