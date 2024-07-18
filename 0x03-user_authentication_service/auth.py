@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Module for authentication service"""
+from bcrypt import hashpw, gensalt
 from db import DB
 from user import User
 from sqlalchemy.exc import NoResultFound
-import bcrypt
 
 
 def _hash_password(password: str) -> bytes:
     """takes a password and returns a hashed password"""
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    encoded_bytes = password.encode('utf-8')
+    salt = gensalt()
+    hash_password = hashpw(encoded_bytes, salt)
+    return hash_password
 
 
 class Auth:
