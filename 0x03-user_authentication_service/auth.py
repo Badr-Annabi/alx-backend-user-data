@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 """Module for authentication service"""
-from sqlalchemy.exc import NoResultFound
-
 from db import DB
 from user import User
-
+from sqlalchemy.exc import NoResultFound
 import bcrypt
 
 
@@ -21,19 +19,12 @@ class Auth:
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """
-        method to register a user
-        Attributes:
-            email: email of the user
-            password: <PASSWORD>
-        Return: return User object if successful.
-        If user exists, it should raise an exception ValueError
-        """
-        try:
-            self._db.find_user_by(email=email)
-            raise ValueError(f"User {email} already exists")
-        except NoResultFound:
-            pass
+        """this method registers a new user"""
         hashed_pwd = _hash_password(password)
-        user = self._db.add_user(email=email, hashed_password=hashed_pwd)
+        try:
+            usr = self._db.find_user_by(email=email)
+            if usr is not None:
+                raise ValueError(f"User {email} already exists")
+        except NoResultFound:
+            user = self._db.add_user(email=email, hashed_password=hashed_pwd)
         return user
