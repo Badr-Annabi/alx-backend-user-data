@@ -74,10 +74,9 @@ class DB:
         except NoResultFound:
             raise ValueError()
         for key, value in args.items():
-            if not hasattr(user, key):
-                raise ValueError()
-            setattr(user, key, value)
-        try:
-            self._session.commit()
-        except InvalidRequestError:
-            raise ValueError()
+            if hasattr(user, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError
+        self._session.commit()
+        return None
