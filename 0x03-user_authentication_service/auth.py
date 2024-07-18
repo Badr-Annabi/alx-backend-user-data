@@ -1,5 +1,7 @@
 #!/bin/usr/env python3
-"""creae a method for encrypting passwords"""
+"""Module for authentication service"""
+
+
 import bcrypt
 
 
