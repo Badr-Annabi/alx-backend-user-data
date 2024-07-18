@@ -8,7 +8,7 @@ import uuid
 
 
 def _hash_password(password: str) -> bytes:
-    """ hashes a password using bcrypt.hashpw"""
+    """method to hash a password"""
     bytes = password.encode("utf-8")
 
     salt = gensalt()
@@ -30,7 +30,7 @@ class Auth:
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """ save a user, if does'nt exist, with hashed password"""
+        """method that registers a new user"""
         hashed_pwd = _hash_password(password)
         try:
             usr = self._db.find_user_by(email=email)
@@ -39,3 +39,14 @@ class Auth:
         except NoResultFound:
             user = self._db.add_user(email=email, hashed_password=hashed_pwd)
         return user
+
+    def validate_login(self, email: str, password: str) -> bool:
+        """method that checks if a user is logged in"""
+        try:
+            user = self._db.find_user_by({"email": email})
+            if user is not None:
+                checkpw(password.encode('utf-8'), user.hashed_password)
+                return True
+        except NoResultFound:
+            return False
+        return False
