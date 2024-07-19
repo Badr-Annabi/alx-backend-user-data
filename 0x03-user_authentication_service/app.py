@@ -29,7 +29,10 @@ def users():
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
-    """this function is used to login a user"""
+    """
+    Returns:
+        session id
+    """
     email = request.form.get('email')
     password = request.form.get('password')
     if Auth.valid_login(email, password):
