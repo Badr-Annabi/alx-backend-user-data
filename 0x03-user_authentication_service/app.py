@@ -29,10 +29,11 @@ def users():
 
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
-    """ create a new session for the user and store it as cookie"""
+    """this function is used to login a user"""
     email = request.form.get('email')
     password = request.form.get('password')
     if Auth.valid_login(email, password):
+        print("Login successful")
         session_id = Auth.create_session(email)
         response = make_response(
             jsonify({"email": email, "message": "logged in"}))
