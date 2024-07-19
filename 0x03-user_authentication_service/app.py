@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Basic Flask app"""
 from auth import Auth
-from flask import Flask, abort, render_template, request, jsonify
+from flask import Flask, abort, request, jsonify
 
 Auth = Auth()
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def users() -> str:
 
 
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
-def login() -> str:
+def login():
     """
     this function is used to login a user
     Return: payload containing a login info
@@ -37,9 +37,9 @@ def login() -> str:
     if not Auth.valid_login(email, password):
         abort(401)
     session_id = Auth.create_session(email)
-    response = jsonify({"email": email, "message": "logged in"})
-    response.set_cookie("session_id", session_id)
-    return response
+    res = jsonify({"email": email, "message": "logged in"})
+    res.set_cookie("session_id", session_id)
+    return res
 
 
 if __name__ == "__main__":
